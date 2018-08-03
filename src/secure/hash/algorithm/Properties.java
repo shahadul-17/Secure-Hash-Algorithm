@@ -5,10 +5,10 @@ import java.util.Scanner;
 public class Properties {
 	
 	private byte numberBaseOfData, numberOfInitialHashValues, numberOfRoundConstants,
-		numberOfRounds, inputBytesInEachBlock, bufferMatrixRows;
+		numberOfRounds, inputBytesInEachBlock, maximumLengthBytes, bufferMatrixRows;
 	private short blockSize;
 	
-	public Properties(String secureHashAlgorithmFamily) throws Exception {
+	public Properties(byte secureHashAlgorithmFamily) throws Exception {
 		load(secureHashAlgorithmFamily);
 	}
 	
@@ -32,6 +32,10 @@ public class Properties {
 		return inputBytesInEachBlock;
 	}
 	
+	public byte getMaximumLengthBytes() {
+		return maximumLengthBytes;
+	}
+	
 	public byte getBufferMatrixRows() {
 		return bufferMatrixRows;
 	}
@@ -40,8 +44,8 @@ public class Properties {
 		return blockSize;
 	}
 	
-	private void load(String secureHashAlgorithmFamily) throws Exception {
-		Scanner scanner = new Scanner(this.getClass().getResourceAsStream("/data/properties." + secureHashAlgorithmFamily));
+	private void load(byte secureHashAlgorithmFamily) throws Exception {
+		Scanner scanner = new Scanner(this.getClass().getResourceAsStream("/data/properties.SHA-" + (secureHashAlgorithmFamily + 1)));
 		
 		while (scanner.hasNextLine()) {
 			int index;
@@ -68,6 +72,9 @@ public class Properties {
 			}
 			else if (line.startsWith("input-bytes-in-each-block")) {
 				inputBytesInEachBlock = Byte.parseByte(line.substring(line.indexOf('=') + 1));
+			}
+			else if (line.startsWith("maximum-length-bytes")) {
+				maximumLengthBytes = Byte.parseByte(line.substring(line.indexOf('=') + 1));
 			}
 			else if (line.startsWith("buffer-matrix-rows")) {
 				bufferMatrixRows = Byte.parseByte(line.substring(line.indexOf('=') + 1));

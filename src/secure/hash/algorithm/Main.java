@@ -25,7 +25,16 @@ public class Main {
 		args[0] = args[0].toUpperCase();
 		
 		try {
-			secureHashAlgorithm = new SecureHashAlgorithm(args[0]);
+			byte secureHashAlgorithmFamily = -1;
+			
+			if (args[0].equals("SHA-1")) {
+				secureHashAlgorithmFamily = SecureHashAlgorithm.SHA_1;
+			}
+			else if (args[0].equals("SHA-2")) {
+				secureHashAlgorithmFamily = SecureHashAlgorithm.SHA_2;
+			}
+			
+			secureHashAlgorithm = new SecureHashAlgorithm(secureHashAlgorithmFamily);
 		}
 		catch (Exception exception) {
 			if (exception.getMessage() == null) {
